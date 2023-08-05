@@ -41,7 +41,26 @@ class ServerFactory
     {
         $server = new Server($this->options['host'], (int) $this->options['port'], (int) $this->options['mode'], (int) $this->options['sock_type']);
         $server->set($this->options['settings']);
+
+
+
+        $server->on("start", function (Server $server) {
+            echo "OpenSwoole http server is started: \n".json_encode($this->options)."\n";
+        });
         $server->on('request', $requestHandler);
+
+        $server->on("WorkerStart", function($server, $workerId)
+        {
+            echo "Server[WorkerStart]: $workerId\n";
+        });
+        $server->on('Task', function (Server $server, $task_id, $reactorId, $data)
+        {
+            echo "Task Worker Process received data\n";
+
+            echo "#{$server->worker_id}\tonTask: [PID={$server->worker_pid}]: task_id=$task_id, data_len=" . strlen($data) . "." . "\n";
+
+            $server->finish($data);
+        });
 
         return $server;
     }
