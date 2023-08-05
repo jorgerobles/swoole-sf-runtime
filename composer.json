@@ -21,7 +21,7 @@
         "symfony/http-kernel": "^5.4 || ^6.0"
     },
     "conflict": {
-        "ext-openswoole": "^22.0.0"
+        "ext-openswoole": "22.0.0"
     },
     "minimum-stability": "dev",
     "prefer-stable": true,
